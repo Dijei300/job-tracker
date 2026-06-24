@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { extractSkills } from "@/lib/extractSkills";
 
 export async function POST(request: Request) {
   try {
@@ -28,7 +29,36 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json(job, { status: 201 });
+    const skillNames = await extractSkills(description);
+
+    for (const name of skillNames) {
+      const skill = await prisma.skill.upsert({
+        where: { name },
+        update: {},
+        create: { name },
+      });
+
+      await prisma.jobSkill.create({
+        data: {
+          jobId: job.id,
+          skillId: skill.id,
+        },
+      });
+    }
+
+    const jobWithSkills = await prisma.job.findUnique({
+      where: { id: job.id },
+      include: {
+        company: true,
+        skills: {
+          include: {
+            skill: true,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json(jobWithSkills, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
