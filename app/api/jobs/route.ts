@@ -67,3 +67,30 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function PATCH(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, status } = body;
+
+    if (!id || !status) {
+      return NextResponse.json(
+        { error: "Job id and status are required" },
+        { status: 400 }
+      );
+    }
+
+    const job = await prisma.job.update({
+      where: { id },
+      data: { status },
+    });
+
+    return NextResponse.json(job);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 }
+    );
+  }
+}
