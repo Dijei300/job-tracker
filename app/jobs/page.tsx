@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import StatusSelect from "./StatusSelect";
+import DeleteButton from "./DeleteButton";
 
 export default async function JobsPage() {
   const jobs = await prisma.job.findMany({
@@ -39,19 +40,22 @@ export default async function JobsPage() {
               className="border rounded p-4"
             >
               <div className="flex justify-between items-start mb-2">
-                <div>
-                  <h2 className="font-semibold text-lg">{job.title}</h2>
-                  <p className="text-gray-600">{job.company.name}</p>
-                  {job.recruiterName && (
-                    <p className="text-sm text-gray-500">
-                      Recruiter: {job.recruiterName}
-                    </p>
-                  )}
-                  <p className="text-sm text-gray-400 mt-1">
+                 <div>
+                    <h2 className="font-semibold text-lg">{job.title}</h2>
+                    <p className="text-gray-600">{job.company.name}</p>
+                    {job.recruiterName && (
+                        <p className="text-sm text-gray-500">
+                            Recruiter: {job.recruiterName}
+                        </p>
+                    )}
+                    <p className="text-sm text-gray-400 mt-1">
                     Applied: {new Date(job.appliedAt).toLocaleDateString()}
-                  </p>
+                    </p>
                 </div>
-                <StatusSelect jobId={job.id} currentStatus={job.status} />
+                <div className="flex flex-col items-end gap-2">
+                    <StatusSelect jobId={job.id} currentStatus={job.status} />
+                    <DeleteButton jobId={job.id} />
+                </div>
               </div>
 
               {job.skills.length > 0 && (

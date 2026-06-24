@@ -94,3 +94,52 @@ export async function PATCH(request: Request) {
     );
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const body = await request.json();
+    const { id } = body;
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Job id is required" },
+        { status: 400 }
+      );
+    }
+
+    const job = await prisma.job.findUnique({
+      where: { id },
+      select: { companyId: true },
+    });
+
+    if (!job) {
+      return NextResponse.json(
+        { error: "Job not found" },
+        { status: 404 }
+      );
+    }
+
+    await prisma.jobSkill.deleteMany({
+      where: { jobId: id },
+    });
+
+    await prisma.job.delete({
+      where: { id },
+    });
+
+    await prisma.company.deleteMany({
+      where: {
+        id: job.companyId,
+        jobs: { none: {} },
+      },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 }
+    );
+  }
+}
