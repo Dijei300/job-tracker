@@ -49,11 +49,13 @@ export default async function JobsPage() {
           {jobs.map((job) => (
             <div
               key={job.id}
-              className="border rounded p-4"
+              className="border rounded p-4 hover:border-gray-500 transition-colors"
             >
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <h2 className="font-semibold text-lg">{job.title}</h2>
+                  <Link href={`/jobs/${job.id}`} className="font-semibold text-lg hover:text-blue-400">
+                    {job.title}
+                  </Link>
                   <p className="text-gray-600">{job.company.name}</p>
                   {job.recruiterName && (
                     <p className="text-sm text-gray-500">
