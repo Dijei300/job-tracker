@@ -44,6 +44,7 @@ model Job {
   recruiterName String?
   appliedAt     DateTime          @default(now())
   status        ApplicationStatus @default(APPLIED)
+  userId        String
 
   companyId String
   company   Company @relation(fields: [companyId], references: [id])

@@ -1,10 +1,21 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 import StatusSelect from "./StatusSelect";
 import DeleteButton from "./DeleteButton";
+import Header from "./Header";
 
 export default async function JobsPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
   const jobs = await prisma.job.findMany({
+    where: { userId: user.id },
     include: {
       company: true,
       skills: {
@@ -20,6 +31,7 @@ export default async function JobsPage() {
 
   return (
     <main className="w-full px-8 py-8">
+      <Header email={user.email!} />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">My Job Applications</h1>
         <Link
@@ -40,21 +52,21 @@ export default async function JobsPage() {
               className="border rounded p-4"
             >
               <div className="flex justify-between items-start mb-2">
-                 <div>
-                    <h2 className="font-semibold text-lg">{job.title}</h2>
-                    <p className="text-gray-600">{job.company.name}</p>
-                    {job.recruiterName && (
-                        <p className="text-sm text-gray-500">
-                            Recruiter: {job.recruiterName}
-                        </p>
-                    )}
-                    <p className="text-sm text-gray-400 mt-1">
-                    Applied: {new Date(job.appliedAt).toLocaleDateString()}
+                <div>
+                  <h2 className="font-semibold text-lg">{job.title}</h2>
+                  <p className="text-gray-600">{job.company.name}</p>
+                  {job.recruiterName && (
+                    <p className="text-sm text-gray-500">
+                      Recruiter: {job.recruiterName}
                     </p>
+                  )}
+                  <p className="text-sm text-gray-400 mt-1">
+                    Applied: {new Date(job.appliedAt).toLocaleDateString()}
+                  </p>
                 </div>
                 <div className="flex flex-col items-end gap-2">
-                    <StatusSelect jobId={job.id} currentStatus={job.status} />
-                    <DeleteButton jobId={job.id} />
+                  <StatusSelect jobId={job.id} currentStatus={job.status} />
+                  <DeleteButton jobId={job.id} />
                 </div>
               </div>
 

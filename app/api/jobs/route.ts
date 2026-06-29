@@ -1,9 +1,20 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { extractSkills } from "@/lib/extractSkills";
+import { createClient } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
     const { title, description, recruiterName, companyName } = body;
 
@@ -26,6 +37,7 @@ export async function POST(request: Request) {
         description,
         recruiterName,
         companyId: company.id,
+        userId: user.id,
       },
     });
 
@@ -70,6 +82,13 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: Request) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     const { id, status } = body;
 
@@ -80,52 +99,48 @@ export async function PATCH(request: Request) {
       );
     }
 
-    const job = await prisma.job.update({
+    const job = await prisma.job.findUnique({ where: { id } });
+
+    if (!job || job.userId !== user.id) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    const updated = await prisma.job.update({
       where: { id },
       data: { status },
     });
 
-    return NextResponse.json(job);
+    return NextResponse.json(updated);
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { error: "Something went wrong" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 }
 
 export async function DELETE(request: Request) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     const { id } = body;
 
     if (!id) {
-      return NextResponse.json(
-        { error: "Job id is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Job id is required" }, { status: 400 });
     }
 
-    const job = await prisma.job.findUnique({
-      where: { id },
-      select: { companyId: true },
-    });
+    const job = await prisma.job.findUnique({ where: { id } });
 
-    if (!job) {
-      return NextResponse.json(
-        { error: "Job not found" },
-        { status: 404 }
-      );
+    if (!job || job.userId !== user.id) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    await prisma.jobSkill.deleteMany({
-      where: { jobId: id },
-    });
-
-    await prisma.job.delete({
-      where: { id },
-    });
+    await prisma.jobSkill.deleteMany({ where: { jobId: id } });
+    await prisma.job.delete({ where: { id } });
 
     await prisma.company.deleteMany({
       where: {
@@ -137,9 +152,6 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { error: "Something went wrong" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 }
