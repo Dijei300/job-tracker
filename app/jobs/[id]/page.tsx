@@ -4,6 +4,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import StatusSelect from "../StatusSelect";
 import DeleteButton from "../DeleteButton";
+import EditJobForm from "./EditJobForm";
 
 export default async function JobDetailPage({
   params,
@@ -85,6 +86,15 @@ export default async function JobDetailPage({
             </div>
           </div>
         )}
+
+        {job.notes && (
+          <div className="mt-4 pt-4 border-t">
+            <h2 className="text-sm font-medium text-gray-400 mb-2">Notes</h2>
+            <p className="text-sm text-gray-300 whitespace-pre-wrap">
+              {job.notes}
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="border rounded p-6">
@@ -95,6 +105,13 @@ export default async function JobDetailPage({
           {job.description}
         </p>
       </div>
+
+      <EditJobForm
+        jobId={job.id}
+        initialTitle={job.title}
+        initialRecruiter={job.recruiterName}
+        initialNotes={job.notes}
+      />
     </main>
   );
 }

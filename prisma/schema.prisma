@@ -42,6 +42,7 @@ model Job {
   title         String
   description   String
   recruiterName String?
+  notes         String?
   appliedAt     DateTime          @default(now())
   status        ApplicationStatus @default(APPLIED)
   userId        String
