@@ -1,0 +1,55 @@
+:root[data-theme="linkedin"] {
+  --bg-page: #f3f2ef;
+  --bg-card: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --accent: #0a66c2;
+  --accent-bg: #e7f3ff;
+  --radius: 6px;
+  --card-border: 1px solid #e0e0e0;
+  --tag-radius: 3px;
+  --tag-bg: #f3f2ef;
+  --tag-text: #333333;
+}
+
+:root[data-theme="instagram"] {
+  --bg-page: #fafafa;
+  --bg-card: #ffffff;
+  --text-primary: #262626;
+  --text-secondary: #8e8e8e;
+  --accent: #c2185b;
+  --accent-bg: #fce4ec;
+  --radius: 16px;
+  --card-border: 1px solid #efefef;
+  --tag-radius: 14px;
+  --tag-bg: #f0f0f0;
+  --tag-text: #444444;
+}
+
+:root[data-theme="twitter"] {
+  --bg-page: #000000;
+  --bg-card: #000000;
+  --text-primary: #e7e9ea;
+  --text-secondary: #71767b;
+  --accent: #1d9bf0;
+  --accent-bg: transparent;
+  --radius: 0px;
+  --card-border: none;
+  --tag-radius: 0px;
+  --tag-bg: transparent;
+  --tag-text: #1d9bf0;
+}
+
+:root[data-theme="notion"] {
+  --bg-page: #ffffff;
+  --bg-card: #ffffff;
+  --text-primary: #37352f;
+  --text-secondary: #787774;
+  --accent: #37352f;
+  --accent-bg: transparent;
+  --radius: 4px;
+  --card-border: 1px solid #ebebea;
+  --tag-radius: 0px;
+  --tag-bg: transparent;
+  --tag-text: #9b9a97;
+}

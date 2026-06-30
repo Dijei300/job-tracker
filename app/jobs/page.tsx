@@ -49,14 +49,24 @@ export default async function JobsPage() {
           {jobs.map((job) => (
             <div
               key={job.id}
-              className="border rounded p-4 hover:border-gray-500 transition-colors"
+              className="p-4 transition-colors"
+              style={{
+                backgroundColor: "var(--bg-card)",
+                border: "var(--card-border)",
+                borderRadius: "var(--radius)",
+                color: "var(--text-primary)",
+              }}
             >
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <Link href={`/jobs/${job.id}`} className="font-semibold text-lg hover:text-blue-400">
+                  <Link
+                    href={`/jobs/${job.id}`}
+                    className="font-semibold text-lg"
+                    style={{ color: "var(--text-primary)" }}
+                  >
                     {job.title}
                   </Link>
-                  <p className="text-gray-600">{job.company.name}</p>
+                  <p style={{ color: "var(--text-secondary)" }}>{job.company.name}</p>
                   {job.recruiterName && (
                     <p className="text-sm text-gray-500">
                       Recruiter: {job.recruiterName}
@@ -77,7 +87,12 @@ export default async function JobsPage() {
                   {job.skills.map(({ skill }) => (
                     <span
                       key={skill.id}
-                      className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full"
+                      className="text-xs px-2 py-1"
+                      style={{
+                        backgroundColor: "var(--tag-bg)",
+                        color: "var(--tag-text)",
+                        borderRadius: "var(--tag-radius)",
+                      }}
                     >
                       {skill.name}
                     </span>
