@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import StatusSelect from "./StatusSelect";
 import DeleteButton from "./DeleteButton";
 import Header from "./Header";
+import CompanyLogo from "./CompanyLogo";
 
 export default async function JobsPage() {
   const supabase = await createClient();
@@ -81,9 +82,12 @@ export default async function JobsPage() {
                   >
                     {job.title}
                   </Link>
-                  <p style={{ color: "var(--text-secondary)" }}>
-                    {job.company.name}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <CompanyLogo domain={job.company.domain} name={job.company.name} />
+                    <p style={{ color: "var(--text-secondary)" }}>
+                      {job.company.name}
+                    </p>
+                  </div>
                   {job.recruiterName && (
                     <p className="text-sm text-gray-500">
                       Recruiter: {job.recruiterName}

@@ -8,6 +8,7 @@ export default function NewJobPage() {
 
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
+  const [companyDomain, setCompanyDomain] = useState("");
   const [recruiter, setRecruiter] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,6 +29,7 @@ export default function NewJobPage() {
       body: JSON.stringify({
         title,
         companyName: company,
+        companyDomain,
         recruiterName: recruiter,
         description,
       }),
@@ -86,6 +88,26 @@ export default function NewJobPage() {
               borderRadius: "var(--radius)",
             }}
             placeholder="e.g. Google"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1"
+          style={{ color: "var(--text-primary)" }}>
+            Company Website
+          </label>
+          <input
+            type="text"
+            value={companyDomain}
+            onChange={(e) => setCompanyDomain(e.target.value)}
+            className="w-full px-3 py-2"
+            style={{
+              backgroundColor: "var(--bg-card)",
+              color: "var(--text-primary)",
+              border: "var(--card-border)",
+              borderRadius: "var(--radius)",
+            }}
+            placeholder="e.g. google.com"
           />
         </div>
 

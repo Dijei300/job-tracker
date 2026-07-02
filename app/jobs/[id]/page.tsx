@@ -4,7 +4,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import StatusSelect from "../StatusSelect";
 import DeleteButton from "../DeleteButton";
-import EditJobForm from "./EditJobForm";
+import CompanyLogo from "../CompanyLogo";
 
 export default async function JobDetailPage({
   params,
@@ -39,33 +39,64 @@ export default async function JobDetailPage({
   }
 
   return (
-    <main className="w-full px-8 py-8 max-w-4xl mx-auto">
+    <main
+      className="w-full px-8 py-8 max-w-4xl mx-auto"
+      style={{ backgroundColor: "var(--bg-page)", minHeight: "100vh" }}
+    >
       <div className="mb-6">
         <Link
           href="/jobs"
-          className="text-sm text-gray-400 hover:text-gray-300"
+          className="text-sm"
+          style={{ color: "var(--text-secondary)" }}
         >
           ← Back to jobs
         </Link>
       </div>
 
-      <div className="border rounded p-6 mb-6">
+      <div
+        className="p-6 mb-6"
+        style={{
+          backgroundColor: "var(--bg-card)",
+          border: "var(--card-border)",
+          borderRadius: "var(--radius)",
+        }}
+      >
         <div className="flex justify-between items-start mb-4">
           <div>
-            <h1 className="text-2xl font-bold mb-1">{job.title}</h1>
-            <p className="text-gray-400 text-lg">{job.company.name}</p>
+            <h1 className="text-2xl font-bold mb-1" style={{ color: "var(--text-primary)" }}>
+              {job.title}
+            </h1>
+            <div className="flex items-center gap-2">
+              <CompanyLogo domain={job.company.domain} name={job.company.name} />
+              <p className="text-lg" style={{ color: "var(--accent)" }}>{job.company.name}</p>
+            </div>
             {job.recruiterName && (
-              <p className="text-sm text-gray-500 mt-1">
+              <p
+                className="text-sm mt-1"
+                style={{ color: "var(--text-secondary)" }}
+              >
                 Recruiter: {job.recruiterName}
               </p>
             )}
-            <p className="text-sm text-gray-500 mt-1">
+            <p
+              className="text-sm mt-1"
+              style={{ color: "var(--text-secondary)" }}
+            >
               Applied: {new Date(job.appliedAt).toLocaleDateString()}
             </p>
           </div>
           <div className="flex flex-col items-end gap-2">
             <StatusSelect jobId={job.id} currentStatus={job.status} />
-            <DeleteButton jobId={job.id} />
+            <div className="flex gap-2 items-center">
+              <Link
+                href={`/jobs/${job.id}/edit`}
+                className="text-xs hover:underline"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                Edit
+              </Link>
+              <DeleteButton jobId={job.id} />
+            </div>
           </div>
         </div>
 
@@ -90,28 +121,28 @@ export default async function JobDetailPage({
         {job.notes && (
           <div className="mt-4 pt-4 border-t">
             <h2 className="text-sm font-medium text-gray-400 mb-2">Notes</h2>
-            <p className="text-sm text-gray-300 whitespace-pre-wrap">
+            <p className="text-sm whitespace-pre-wrap" style={{ color: "var(--text-primary)" }}>
               {job.notes}
             </p>
           </div>
         )}
       </div>
 
-      <div className="border rounded p-6">
+      <div
+        className="p-6"
+        style={{
+          backgroundColor: "var(--bg-card)",
+          border: "var(--card-border)",
+          borderRadius: "var(--radius)",
+        }}
+      >
         <h2 className="text-sm font-medium text-gray-400 mb-3">
           Job Description
         </h2>
-        <p className="text-sm text-gray-300 whitespace-pre-wrap">
+        <p className="text-sm whitespace-pre-wrap" style={{ color: "var(--text-primary)" }}>
           {job.description}
         </p>
       </div>
-
-      <EditJobForm
-        jobId={job.id}
-        initialTitle={job.title}
-        initialRecruiter={job.recruiterName}
-        initialNotes={job.notes}
-      />
     </main>
   );
 }

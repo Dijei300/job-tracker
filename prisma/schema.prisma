@@ -20,8 +20,9 @@ enum ApplicationStatus {
 }
 
 model Company {
-  id   String @id @default(cuid())
-  name String @unique
+  id     String  @id @default(cuid())
+  name   String  @unique
+  domain String?
 
   jobs Job[]
 

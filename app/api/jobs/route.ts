@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { title, description, recruiterName, companyName } = body;
+    const { title, description, recruiterName, companyName, companyDomain } = body;
 
     if (!title || !description || !companyName) {
       return NextResponse.json(
@@ -26,8 +26,8 @@ export async function POST(request: Request) {
 
     const company = await prisma.company.upsert({
       where: { name: companyName },
-      update: {},
-      create: { name: companyName },
+      update: companyDomain ? { domain: companyDomain } : {},
+      create: { name: companyName, domain: companyDomain || null },
     });
 
     const job = await prisma.job.create({
