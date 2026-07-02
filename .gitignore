@@ -41,3 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 /app/generated/prisma
+
+# local-only AI assistant context (not synced across machines)
+CLAUDE.md
+AGENTS.md
