@@ -47,7 +47,8 @@ export default function StatusSelect({
       value={status}
       onChange={(e) => handleChange(e.target.value)}
       disabled={saving}
-      className={`text-sm font-medium px-2 py-1 rounded border-0 cursor-pointer ${STATUS_COLORS[status]}`}
+      className={`text-sm font-medium px-2 py-1 border-0 cursor-pointer ${STATUS_COLORS[status]}`}
+      style={{ borderRadius: "var(--tag-radius)" }}
     >
       {STATUS_OPTIONS.map((option) => (
         <option key={option} value={option}>

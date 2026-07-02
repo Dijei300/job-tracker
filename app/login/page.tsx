@@ -48,9 +48,7 @@ export default function LoginPage() {
           {isSignUp ? "Create Account" : "Sign In"}
         </h1>
 
-        {error && (
-          <p className="text-sm text-red-400 mb-4">{error}</p>
-        )}
+        {error && <p className="text-sm text-red-400 mb-4">{error}</p>}
 
         <div className="flex flex-col gap-4">
           <div>
@@ -80,7 +78,11 @@ export default function LoginPage() {
             disabled={loading}
             className="bg-blue-600 text-white px-6 py-2 rounded font-medium hover:bg-blue-700 disabled:opacity-50"
           >
-            {loading ? "Please wait..." : isSignUp ? "Create Account" : "Sign In"}
+            {loading
+              ? "Please wait..."
+              : isSignUp
+                ? "Create Account"
+                : "Sign In"}
           </button>
 
           <button

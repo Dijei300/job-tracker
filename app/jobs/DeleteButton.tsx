@@ -28,7 +28,7 @@ export default function DeleteButton({ jobId }: { jobId: string }) {
   if (confirming) {
     return (
       <div className="flex gap-2 items-center">
-        <span className="text-xs text-gray-400">Sure?</span>
+        <span className="text-xs" style={{ color: "var(--text-secondary)" }}>Sure?</span>
         <button
           onClick={handleDelete}
           disabled={deleting}
@@ -47,9 +47,10 @@ export default function DeleteButton({ jobId }: { jobId: string }) {
   }
 
   return (
-    <button
+   <button
       onClick={() => setConfirming(true)}
-      className="text-xs text-gray-500 hover:text-red-400"
+      className="text-xs hover:text-red-400"
+      style={{ color: "var(--text-secondary)" }}
     >
       Delete
     </button>

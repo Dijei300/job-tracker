@@ -8,7 +8,9 @@ import Header from "./Header";
 
 export default async function JobsPage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
     redirect("/login");
@@ -30,13 +32,26 @@ export default async function JobsPage() {
   });
 
   return (
-    <main className="w-full px-8 py-8">
+    <main
+      className="w-full px-8 py-8"
+      style={{ backgroundColor: "var(--bg-page)", minHeight: "100vh" }}
+    >
       <Header email={user.email!} />
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">My Job Applications</h1>
+        <h1
+          className="text-2xl font-bold"
+          style={{ color: "var(--text-primary)" }}
+        >
+          My Job Applications
+        </h1>
         <Link
           href="/jobs/new"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="px-4 py-2"
+          style={{
+            backgroundColor: "var(--accent)",
+            color: "#ffffff",
+            borderRadius: "var(--radius)",
+          }}
         >
           + Add Job
         </Link>
@@ -66,7 +81,9 @@ export default async function JobsPage() {
                   >
                     {job.title}
                   </Link>
-                  <p style={{ color: "var(--text-secondary)" }}>{job.company.name}</p>
+                  <p style={{ color: "var(--text-secondary)" }}>
+                    {job.company.name}
+                  </p>
                   {job.recruiterName && (
                     <p className="text-sm text-gray-500">
                       Recruiter: {job.recruiterName}

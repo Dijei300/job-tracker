@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-
 export default function NewJobPage() {
   const router = useRouter();
 
@@ -44,12 +43,15 @@ export default function NewJobPage() {
   }
 
   return (
-    <main className="max-w-2xl mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-6">Add a Job Application</h1>
+    <main
+      className="max-w-2xl mx-auto p-8"
+      style={{ backgroundColor: "var(--bg-page)", minHeight: "100vh" }}
+    >
+      <h1 className="text-2xl font-bold mb-6" style={{ color: "var(--text-primary)" }}>
+        Add a Job Application
+      </h1>
 
-      {error && (
-        <p className="text-red-500 mb-4">{error}</p>
-      )}
+      {error && <p className="text-red-500 mb-4">{error}</p>}
 
       <div className="flex flex-col gap-4">
         <div>
@@ -58,35 +60,60 @@ export default function NewJobPage() {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full border rounded px-3 py-2"
+            className="w-full px-3 py-2"
+            style={{
+              backgroundColor: "var(--bg-card)",
+              color: "var(--text-primary)",
+              border: "var(--card-border)",
+              borderRadius: "var(--radius)",
+            }}
             placeholder="e.g. Frontend Developer"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">Company *</label>
+          <label className="block text-sm font-medium mb-1"
+          style={{ color: "var(--text-primary)" }}>Company *</label>
           <input
             type="text"
             value={company}
             onChange={(e) => setCompany(e.target.value)}
-            className="w-full border rounded px-3 py-2"
+            className="w-full px-3 py-2"
+            style={{
+              backgroundColor: "var(--bg-card)",
+              color: "var(--text-primary)",
+              border: "var(--card-border)",
+              borderRadius: "var(--radius)",
+            }}
             placeholder="e.g. Google"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">Recruiter Name</label>
+          <label className="block text-sm font-medium mb-1"
+          style={{ color: "var(--text-primary)" }}>
+            Recruiter Name
+          </label>
           <input
             type="text"
             value={recruiter}
             onChange={(e) => setRecruiter(e.target.value)}
-            className="w-full border rounded px-3 py-2"
+            className="w-full px-3 py-2"
+            style={{
+              backgroundColor: "var(--bg-card)",
+              color: "var(--text-primary)",
+              border: "var(--card-border)",
+              borderRadius: "var(--radius)",
+            }}
             placeholder="e.g. John Doe"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">Job Description *</label>
+          <label className="block text-sm font-medium mb-1"
+          style={{ color: "var(--text-primary)" }}>
+            Job Description *
+          </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -98,7 +125,12 @@ export default function NewJobPage() {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="bg-blue-600 text-white px-6 py-2 rounded font-medium hover:bg-blue-700 disabled:opacity-50"
+          className="px-6 py-2 font-medium disabled:opacity-50"
+          style={{
+            backgroundColor: "var(--accent)",
+            color: "#ffffff",
+            borderRadius: "var(--radius)",
+          }}
         >
           {loading ? "Saving..." : "Save Job"}
         </button>

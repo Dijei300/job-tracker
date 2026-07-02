@@ -6,13 +6,12 @@ import { createClient } from "@/lib/supabase/server";
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await request.json();
@@ -21,7 +20,7 @@ export async function POST(request: Request) {
     if (!title || !description || !companyName) {
       return NextResponse.json(
         { error: "Title, description and company are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -75,7 +74,7 @@ export async function POST(request: Request) {
     console.error(error);
     return NextResponse.json(
       { error: "Something went wrong" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -97,7 +96,7 @@ export async function PATCH(request: Request) {
     if (!id) {
       return NextResponse.json(
         { error: "Job id is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -122,7 +121,7 @@ export async function PATCH(request: Request) {
     console.error(error);
     return NextResponse.json(
       { error: "Something went wrong" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -130,7 +129,9 @@ export async function PATCH(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -140,7 +141,10 @@ export async function DELETE(request: Request) {
     const { id } = body;
 
     if (!id) {
-      return NextResponse.json({ error: "Job id is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Job id is required" },
+        { status: 400 },
+      );
     }
 
     const job = await prisma.job.findUnique({ where: { id } });
@@ -162,6 +166,9 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 },
+    );
   }
 }
